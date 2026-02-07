@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +9,7 @@
     <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('auth/images/logo.png') }}" />
-    <link rel="stylesheet" href="{{ asset('default/style.css')}}">
+    <link rel="stylesheet" href="{{ asset('default/style.css') }}">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
@@ -183,17 +180,17 @@
     <nav class="navbar navbar-expand-lg navbar-dark" id="navbar">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img style="height: 60px" > &nbsp; LA CONCEPCION COLLEGE
+                <img style="height: 60px"> &nbsp; LA CONCEPCION COLLEGE
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="about">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="admin/admin_login">Admin Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="/login">Examiners Login</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin/admin_login">Admin Login</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/login">Examiners Login</a></li>
                 </ul>
             </div>
         </div>
@@ -201,7 +198,8 @@
 
     <!-- Header -->
     <header>
-        <img src="{{ asset('auth/images/logo.png') }}" alt=""><h1>ASSISTments</h1>
+        <img src="{{ asset('auth/images/logo.png') }}" alt="">
+        <h1>ASSISTments</h1>
     </header>
 
 
@@ -215,76 +213,110 @@
             <label class="form-check-label text-dark" for="darkToggle">Dark Mode</label>
         </div>
         <div class="row mt-4">
-                            @if($courses->isEmpty())
-        <h1 style="text-align: center; color: #000080">NO OFFERED COURSE AVAILABLE</h1>
-    @else
-        @foreach($courses as $course)
-            <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex align-items-stretch">
-                <div class="course-card d-flex flex-column">
-                    @if($course->course_picture && is_array($course->course_picture))
-                        <div class="slick-container">
-                            @foreach($course->course_picture as $picture)
-                                <img style="height: 300px" src="{{ asset('storage/course/course_picture/' . $picture) }}" alt="{{ $course->course_name }}">
-                            @endforeach
+            @if ($courses->isEmpty())
+                <h1 style="text-align: center; color: #000080">NO OFFERED COURSE AVAILABLE</h1>
+            @else
+                @foreach ($courses as $course)
+                    <div class="col-12 col-sm-6 col-md-4 mb-4 d-flex align-items-stretch">
+                        <div class="course-card d-flex flex-column">
+                            @if ($course->course_picture && is_array($course->course_picture))
+                                <div class="slick-container">
+                                    @foreach ($course->course_picture as $picture)
+                                        <img style="height: 300px"
+                                            src="{{ asset('storage/course/course_picture/' . $picture) }}"
+                                            alt="{{ $course->course_name }}">
+                                    @endforeach
+                                </div>
+                            @else
+                                <img src="{{ asset('default-course-image.jpg') }}" alt="{{ $course->course_name }}">
+                            @endif
+                            <h2>{{ $course->course_name }}</h2>
+                            <p>{{ \Illuminate\Support\Str::limit($course->course_description, 100) }}</p>
+                            <div class="mt-auto">
+                                <a href="{{ route('show.course', $course->id) }}"
+                                    class="btn btn-primary learn-btn">Learn More</a>
+                            </div>
                         </div>
-                    @else
-                        <img src="{{ asset('default-course-image.jpg') }}" alt="{{ $course->course_name }}">
-                    @endif
-                    <h2>{{ $course->course_name }}</h2>
-                    <p>{{ \Illuminate\Support\Str::limit($course->course_description, 100) }}</p>
-                    <div class="mt-auto">
-                        <a href="{{ route('show.course', $course->id) }}" class="btn btn-primary learn-btn">Learn More</a>
                     </div>
+                @endforeach
+                <div class="d-flex justify-content-center">
+                    {{ $courses->links('pagination::bootstrap-5') }}
                 </div>
-            </div>
-        @endforeach
-        <div class="d-flex justify-content-center">
-            {{ $courses->links('pagination::bootstrap-5') }}
+            @endif
         </div>
-    @endif
-    </div>
+
+        <!-- Chat Button -->
+        <button id="chatToggleBtn" class="chat-btn">
+            💬 Chat with us
+        </button>
+
+
+        <div id="chatModal" class="chat-modal">
+            <div class="chat-header">
+                <span>ASSISTbot</span>
+
+            </div>
+
+            <iframe src="https://page.botpenguin.com/68d4af53c61cda54b17f1577/68d4af070e1a130391d86ff8" frameborder="0">
+            </iframe>
+        </div>
 
 
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+        <!-- Scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('.slick-container').slick({
-                slidesToShow: 1,
-                slidesToScroll: 1,
-                dots: true,
-                arrows: true,
-                infinite: true,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                adaptiveHeight: true
+        <script>
+            $(document).ready(function() {
+                $('.slick-container').slick({
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true,
+                    arrows: true,
+                    infinite: true,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    adaptiveHeight: true
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        const toggleSwitch = document.getElementById('darkToggle');
-        const themeLabel = document.querySelector('.form-check-label');
+        <script>
+            const toggleSwitch = document.getElementById('darkToggle');
+            const themeLabel = document.querySelector('.form-check-label');
 
-        // On switch toggle
-        toggleSwitch.addEventListener('change', () => {
-            document.body.classList.toggle('dark-mode', toggleSwitch.checked);
-            localStorage.setItem('theme', toggleSwitch.checked ? 'dark' : 'light');
-        });
+            // On switch toggle
+            toggleSwitch.addEventListener('change', () => {
+                document.body.classList.toggle('dark-mode', toggleSwitch.checked);
+                localStorage.setItem('theme', toggleSwitch.checked ? 'dark' : 'light');
+            });
 
-        // Load saved theme on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-mode');
-                toggleSwitch.checked = true;
-            }
-        });
-    </script>
+            // Load saved theme on page load
+            window.addEventListener('DOMContentLoaded', () => {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    toggleSwitch.checked = true;
+                }
+            });
+        </script>
+
+        <script>
+            const chatBtn = document.getElementById('chatToggleBtn');
+            const chatModal = document.getElementById('chatModal');
+
+            chatBtn.addEventListener('click', () => {
+                if (chatModal.style.display === 'flex') {
+                    chatModal.style.display = 'none';
+                    chatBtn.innerHTML = '💬 Chat with us';
+                } else {
+                    chatModal.style.display = 'flex';
+                    chatBtn.innerHTML = '✖ Close chat';
+                }
+            });
+        </script>
 
 </body>
 
